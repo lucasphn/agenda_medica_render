@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # SQLALCHEMY_DATABASE_URL = os.environ.get('URL_DATABASE_POSTGRES') preparado para receber uma variável de ambiente
-SQLALCHEMY_DATABASE_URL = 'postgresql://user:password@postgres/mydatabase'
+SQLALCHEMY_DATABASE_URL = 'postgresql://admin:UUqx3A8lyCj87FXkMQK1uj00gKSBwj2L@dpg-cobv310cmk4c73agfe5g-a.oregon-postgres.render.com/db_engineer'
 # Criando o motor do banco de dados
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
