@@ -27,7 +27,7 @@ def show_response_message(response):
 
 # Função para obter os nomes dos clientes
 def get_client_names():
-    response = requests.get("http://backend:8000/clientes/")
+    response = requests.get("https://agenda-medica-render.onrender.com/clientes/")
     if response.status_code == 200:
         clientes = response.json()
         return sorted([cliente['nome'] for cliente in clientes])
@@ -37,7 +37,7 @@ def get_client_names():
 
 # Função para obter os detalhes de um cliente pelo nome
 def get_client_details(nome_cliente):
-    response = requests.get(f"http://backend:8000/clientes/nome/{nome_cliente}")
+    response = requests.get(f"https://agenda-medica-render.onrender.com/clientes/nome/{nome_cliente}")
     if response.status_code == 200:
         return response.json()
     else:
@@ -49,7 +49,7 @@ client_names = get_client_names()
 
 # Função para obter os nomes dos profissionais
 def get_profisional_names():
-    response = requests.get("http://backend:8000/profissional/")
+    response = requests.get("https://agenda-medica-render.onrender.com/profissional/")
     if response.status_code == 200:
         profissionais = response.json()
         return sorted([profissional['nome'] for profissional in profissionais])
@@ -95,7 +95,7 @@ with st.expander("Adicionar um Novo Agendamento"):
 
                 # Fazendo requisição na API
                 response = requests.post(
-                    "http://backend:8000/agenda/",
+                    "https://agenda-medica-render.onrender.com/agenda/",
                     json={
                         "data_agendada": data_agendada_formatada,
                         "hora_agendada": hora_agendada,
@@ -117,7 +117,7 @@ with st.expander("Adicionar um Novo Agendamento"):
 # Visualizar Agendamento
 with st.expander("Visualizar Agendamentos"):
     if st.button("Exibir Todos os Agendamentos"):
-        response = requests.get("http://backend:8000/agenda/")
+        response = requests.get("https://agenda-medica-render.onrender.com/agenda/")
         if response.status_code == 200:
             agendamento = response.json()
             df = pd.DataFrame(agendamento)
@@ -155,7 +155,7 @@ with st.expander("Visualizar Agendamentos"):
 with st.expander("Obter Detalhes de um Agendamento"):
     get_id = st.number_input("ID do Agendamento", min_value=1, format="%d")
     if st.button("Buscar Agendamento"):
-        response = requests.get(f"http://backend:8000/agenda/id/{get_id}")
+        response = requests.get(f"https://agenda-medica-render.onrender.com/agenda/id/{get_id}")
         if response.status_code == 200:
             agendamento = response.json()
             df = pd.DataFrame([agendamento])
@@ -184,7 +184,7 @@ with st.expander("Obter Detalhes de um Agendamento"):
 with st.expander("Deletar Agendamento"):
     delete_id = st.number_input("ID do Agendamento para Deletar", min_value=1, format="%d")
     if st.button("Deletar Agendamento"):
-        response = requests.delete(f"http://backend:8000/agenda/{delete_id}")
+        response = requests.delete(f"https://agenda-medica-render.onrender.com/agenda/{delete_id}")
         show_response_message(response)
 
 # Atualizar Produto
@@ -226,7 +226,7 @@ with st.expander("Atualizar Agendamento"):
 
             if update_data:
                 response = requests.put(
-                    f"http://backend:8000/agenda/{update_id}", json=update_data
+                    f"https://agenda-medica-render.onrender.com/agenda/{update_id}", json=update_data
                 )
                 show_response_message(response)
             else:

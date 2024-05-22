@@ -27,7 +27,7 @@ def show_response_message(response):
 
 # Função para obter os nomes dos clientes
 def get_client_names():
-    response = requests.get("http://backend:8000/clientes/")
+    response = requests.get("https://agenda-medica-render.onrender.com/clientes/")
     if response.status_code == 200:
         clientes = response.json()
         return sorted([cliente['nome'] for cliente in clientes])
@@ -65,7 +65,7 @@ with st.expander('Adicionar um Novo Cliente'):
 
             # Fazendo requisição na API
             response = requests.post(
-                "http://backend:8000/clientes/",
+                "https://agenda-medica-render.onrender.com/clientes/",
                 json={
                     "nome": nome_do_cliente,
                     "data_nascimento": data_nascimento_formatada,
@@ -85,7 +85,7 @@ with st.expander('Adicionar um Novo Cliente'):
 # Visualizar Todos os Clientes
 with st.expander("Visualizar Clientes"):
     if st.button("Exibir Todos os Clientes"):
-        response = requests.get("http://backend:8000/clientes/")
+        response = requests.get("https://agenda-medica-render.onrender.com/clientes/")
         if response.status_code == 200:
             clientes = response.json()
             df = pd.DataFrame(clientes)
@@ -118,7 +118,7 @@ with st.expander("Visualizar Clientes"):
 with st.expander("Obter Detalhes de um Cliente"):
     name_client = st.selectbox("Nome do Paciente", options=[""] + client_names)
     if st.button("Buscar Cliente"):
-        response = requests.get(f"http://backend:8000/clientes/nome/{name_client}")
+        response = requests.get(f"https://agenda-medica-render.onrender.com/clientes/nome/{name_client}")
         if response.status_code == 200:
             clientes = response.json()
             df = pd.DataFrame([clientes])
@@ -142,7 +142,7 @@ with st.expander("Obter Detalhes de um Cliente"):
             st.dataframe(df, hide_index = True)
         # TABELA DE AGENDAMENTOS
 
-        response = requests.get(f"http://backend:8000/agenda/nome/{name_client}")
+        response = requests.get(f"https://agenda-medica-render.onrender.com/agenda/nome/{name_client}")
         if response.status_code == 200:
             agendamento = response.json()
             df_agendamentos = pd.DataFrame(agendamento)
@@ -182,7 +182,7 @@ with st.expander("Obter Detalhes de um Cliente"):
 with st.expander("Excluir Cliente"):
     delete_id = st.number_input("ID do Cliente para Exclusão", min_value=1, format="%d")
     if st.button("Excluir Cliente"):
-        response = requests.delete(f"http://backend:8000/clientes/{delete_id}")
+        response = requests.delete(f"https://agenda-medica-render.onrender.com/clientes/{delete_id}")
         show_response_message(response)
 
 # Atualizar Produto
@@ -227,7 +227,7 @@ with st.expander("Atualizar dados do Cliente"):
             
             if update_dados:
                 response = requests.put(
-                    f"http://backend:8000/clientes/{update_id}" , json=update_dados
+                    f"https://agenda-medica-render.onrender.com/clientes/{update_id}" , json=update_dados
                 )
 
                 show_response_message(response)

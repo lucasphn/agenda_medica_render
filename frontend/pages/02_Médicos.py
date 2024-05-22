@@ -27,7 +27,7 @@ def show_response_message(response):
 
 # Função para obter os nomes dos profissionais
 def get_profisional_names():
-    response = requests.get("http://backend:8000/profissional/")
+    response = requests.get("https://agenda-medica-render.onrender.com/profissional/")
     if response.status_code == 200:
         profissionais = response.json()
         return sorted([profissional['nome'] for profissional in profissionais])
@@ -49,7 +49,7 @@ with st.expander('Adicionar um Novo Profissional'):
 
             # Fazendo requisição na API
             response = requests.post(
-                "http://backend:8000/profissional/",
+                "https://agenda-medica-render.onrender.com/profissional/",
                 json={
                     "nome": nome_do_profissional,
                     "area_atuacao": area_de_atuacao
@@ -61,7 +61,7 @@ with st.expander('Adicionar um Novo Profissional'):
 # Visualizar Todos os cadastros
 with st.expander("Visualizar Profissionais"):
     if st.button("Exibir Todos os cadastros"):
-        response = requests.get("http://backend:8000/profissional/")
+        response = requests.get("https://agenda-medica-render.onrender.com/profissional/")
         if response.status_code == 200:
             profissionais = response.json()
             df = pd.DataFrame(profissionais)
@@ -87,7 +87,7 @@ with st.expander("Visualizar Profissionais"):
 with st.expander("Obter Detalhes de um Profissional"):
     name_profisisonal = st.selectbox("Nome do Profissional", options=[""] + profissionais_names)
     if st.button("Buscar Profissional"):
-        response = requests.get(f"http://backend:8000/profissional/nome/{name_profisisonal}")
+        response = requests.get(f"https://agenda-medica-render.onrender.com/profissional/nome/{name_profisisonal}")
         if response.status_code == 200:
             profissionais = response.json()
             df = pd.DataFrame([profissionais])
@@ -105,7 +105,7 @@ with st.expander("Obter Detalhes de um Profissional"):
 
         # TABELA DE AGENDAMENTOS
 
-        response = requests.get(f"http://backend:8000/agenda/profissional/{name_profisisonal}")
+        response = requests.get(f"https://agenda-medica-render.onrender.com/agenda/profissional/{name_profisisonal}")
         if response.status_code == 200:
             agendamento = response.json()
             df = pd.DataFrame(agendamento)
@@ -151,7 +151,7 @@ with st.expander("Obter Detalhes de um Profissional"):
 with st.expander("Excluir Profissional"):
     id_profissional = st.number_input("ID do Profissional para Exclusão", min_value=1, format="%d")
     if st.button("Excluir Profissional"):
-        response = requests.delete(f"http://backend:8000/profissional/{id_profissional}")
+        response = requests.delete(f"https://agenda-medica-render.onrender.com/profissional/{id_profissional}")
         show_response_message(response)
 
 # Atualizar Produto
@@ -172,7 +172,7 @@ with st.expander("Atualizar dados do Profissional"):
           
             if update_dados:
                 response = requests.put(
-                    f"http://backend:8000/profissional/{update_id}" , json=update_dados
+                    f"https://agenda-medica-render.onrender.com/profissional/{update_id}" , json=update_dados
                 )
 
                 show_response_message(response)
