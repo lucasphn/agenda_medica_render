@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#f36f22"             # Laranja para foco e desfoco dos elementos, bordas, etc.
+backgroundColor = "#ffffff"          # Branco
+secondaryBackgroundColor = "#f2f2f2" # Cinza claro para fundo dos widgets
+textColor = "#303134"                # Cinza Forte para os Textos 
+font = "sans serif"
