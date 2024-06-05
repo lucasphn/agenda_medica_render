@@ -75,12 +75,6 @@ class AgendaUpdate(BaseModel):
             return v
         raise ValueError('Hora Inválida')
 
-    @validator('nome_medico')
-    def check_medicos(cls, v):
-        if v in [item.value for item in NomeMedicos]:
-            return v
-        raise ValueError('Nome Inválido')
-
     @validator('categoria_agendamento')
     def check_tipos(cls, v):
         if v in [item.value for item in TiposAgendamento]:

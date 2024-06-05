@@ -8,11 +8,11 @@ st.image("agendar.png", width=200)
 st.title("Agenda Médica")
 
 # Função auxiliar para exibir mensagens de erro detalhadas
-def show_response_message(response):
+def show_response_message(response, update_data=None):
     if response.status_code == 200:
         st.success("Operação realizada com sucesso!")
     else:
-        try:
+        try:           
             data = response.json()
             if "detail" in data:
                 # Se o erro for uma lista, extraia as mensagens de cada erro
@@ -23,7 +23,11 @@ def show_response_message(response):
                     # Caso contrário, mostre a mensagem de erro diretamente
                     st.error(f"Erro: {data['detail']}")
         except ValueError:
+            # Exibir o modelo JSON enviado para o banco, se disponível
+            st.info("Modelo JSON enviado para o banco:")
+            st.json(update_data)
             st.error("Erro desconhecido. Não foi possível decodificar a resposta.")
+
 
 # Função para obter os nomes dos clientes
 def get_client_names():
@@ -206,28 +210,39 @@ with st.expander("Atualizar Agendamento"):
         update_button = st.form_submit_button("Atualizar Agendamento")
 
         if update_button:
-            update_data = {}
-            if new_data_agendada:
-                update_data["data_agendada"] = new_data_agendada
-            if new_hora_agendada:
-                update_data["hora_agendada"] = new_hora_agendada
-            if new_nome_paciente:
-                update_data["nome_paciente"] = new_nome_paciente
-            if new_nome_medico:
-                update_data["nome_medico"] = new_nome_medico
-            if new_categoria_agendamento:
-                update_data["categoria_agendamento"] = new_categoria_agendamento
-            if new_price > 0:
-                update_data["price"] = new_price
-            if new_email_paciente:
-                update_data["email_paciente"] = new_email_paciente 
-            if new_description:
-                update_data["description"] = new_description
 
-            if update_data:
-                response = requests.put(
-                    f"https://agenda-medica-render.onrender.com/agenda/{update_id}", json=update_data
-                )
-                show_response_message(response)
-            else:
-                st.error("Nenhuma informação fornecida para atualização")
+            try:
+                # Tratamento da data inserida pelo usuário
+                data_agendada = new_data_agendada.replace('/', '-')
+                # Transformamos a string em data
+                data_agendada = datetime.datetime.strptime(data_agendada, '%d-%m-%Y')
+                # Transformamos a data no modelo padrão aceito pelo banco de dados
+                data_agendada_formatada = data_agendada.strftime('%Y-%m-%d')
+
+                update_data = {}
+                if new_data_agendada:
+                    update_data["data_agendada"] = data_agendada_formatada
+                if new_hora_agendada:
+                    update_data["hora_agendada"] = new_hora_agendada
+                if new_nome_paciente:
+                    update_data["nome_paciente"] = new_nome_paciente
+                if new_nome_medico:
+                    update_data["nome_medico"] = new_nome_medico
+                if new_categoria_agendamento:
+                    update_data["categoria_agendamento"] = new_categoria_agendamento
+                if new_price > 0:
+                    update_data["price"] = new_price
+                if new_email_paciente:
+                    update_data["email_paciente"] = new_email_paciente 
+                if new_description:
+                    update_data["description"] = new_description
+
+                if update_data:
+                    response = requests.put(
+                        f"https://agenda-medica-render.onrender.com/agenda/{update_id}", json=update_data
+                    )
+                    show_response_message(response)
+                else:
+                    st.error("Nenhuma informação fornecida para atualização")
+            except ValueError:
+                st.error("Erro no formato da data. Por favor, use o formato dd-mm-aaaa.")            

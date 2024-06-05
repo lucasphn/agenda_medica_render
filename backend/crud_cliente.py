@@ -63,6 +63,8 @@ def update_cliente(db: Session, id_cliente: int, cliente: ClienteUpdate):
         db_registro_update.data_nascimento = cliente.data_nascimento
     if cliente.cpf is not None:
         db_registro_update.cpf = cliente.cpf
+    if cliente.uf is not None:
+        db_registro_update.uf = cliente.uf
     if cliente.cidade is not None:
         db_registro_update.cidade = cliente.cidade
     if cliente.bairro is not None:
